@@ -1,9 +1,14 @@
 import os
 import markdown
+import re
 
 def build():
     with open('경쟁률_현황.md', 'r', encoding='utf-8') as f:
         md_text = f.read()
+
+    # 마지막 업데이트 시간 파싱
+    match = re.search(r'\((.* 현황 업데이트)\)', md_text)
+    last_updated = match.group(1) if match else '업데이트 시간 알 수 없음'
 
     html_content = markdown.markdown(md_text, extensions=['tables', 'fenced_code'])
 
@@ -53,10 +58,65 @@ def build():
             table {{ display: block; overflow-x: auto; white-space: nowrap; }}
             h1 {{ font-size: 2rem; }}
         }}
+        .header-actions {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 15px;
+        }}
+        .update-time {{
+            color: #94a3b8;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        .update-time strong {{
+            color: #34d399;
+            font-weight: 600;
+        }}
+        .refresh-btn {{
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4);
+        }}
+        .refresh-btn:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px -2px rgba(59, 130, 246, 0.6);
+            color: white;
+        }}
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="header-actions">
+            <div class="update-time">
+                <span>⏱️ 마지막 갱신:</span>
+                <strong>{last_updated}</strong>
+            </div>
+            <a href="https://github.com/ruknabid/susi-dashboard/actions/workflows/update.yml" target="_blank" class="refresh-btn">
+                🔄 강제 실시간 갱신 (스위치 켜기)
+            </a>
+        </div>
+        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 30px; text-align: right;">
+            * 버튼 클릭 후 <strong>Run workflow</strong> 버튼을 누르시면 30초 뒤 표가 갱신됩니다.
+        </div>
         {html_content}
     </div>
 </body>
