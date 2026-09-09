@@ -26,14 +26,14 @@ targets = [
     ('서울여자대학교', '바롬인재면접', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('서울여자대학교', '교과우수자전형', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('서울여자대학교', '교과우수자전형', '행정', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
-    ('경희대학교', '지역균형', '글로벌커뮤니케이션학부', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
-    ('경희대학교', '지역균형', '러시아어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
-    ('경희대학교', '지역균형', '스페인어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
-    ('경희대학교', '지역균형', '프랑스어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
-    ('경희대학교', '논술우수자전형', '한국어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
-    ('경희대학교', '논술우수자전형', '러시아어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
-    ('경희대학교', '논술우수자전형', '프랑스어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
-    ('경희대학교', '논술우수자전형', '스페인어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교(국제)', '지역균형', '글로벌커뮤니케이션학부', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교(국제)', '지역균형', '러시아어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교(국제)', '지역균형', '스페인어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교(국제)', '지역균형', '프랑스어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교(국제)', '논술우수자전형', '한국어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교(국제)', '논술우수자전형', '러시아어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교(국제)', '논술우수자전형', '프랑스어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교(국제)', '논술우수자전형', '스페인어학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
     ('한국외국어대학교', '논술', '일본언어문화', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
     ('한국외국어대학교', '논술', '이탈리아어과', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
     ('숭실대학교', 'SSU미래인재전형-면접형', '평생교육', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11010851.html', 'utf-8'),
@@ -64,7 +64,7 @@ def update_markdown(updates):
                 dept = cells[3].replace('**', '').strip()
                 
                 for (u, t, d), (quota, app, ratio) in updates.items():
-                    if u in univ:
+                    if u in univ or univ in u:
                         if d in dept or dept in d:
                             t_norm = re.sub(r'[^\w]', '', t)
                             track_norm = re.sub(r'[^\w]', '', track)
@@ -120,7 +120,7 @@ def main():
                 first_row = [c.text.strip() for c in rows[0].find_all(['th','td'])]
                 ctx += ' ' + ' '.join(first_row)
             
-            if univ == '경희대학교' and '국제' not in ctx:
+            if '경희대학교' in univ and '국제' not in ctx:
                 continue
             if track.replace(' ', '') not in ctx.replace(' ', ''):
                 continue
