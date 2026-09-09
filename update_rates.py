@@ -1,6 +1,6 @@
 import urllib.request
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import re
 
 headers = {'User-Agent': 'Mozilla/5.0'}
@@ -64,8 +64,9 @@ def update_markdown(updates):
                         break
         new_lines.append(line)
         
-    # Update timestamp in the header
-    now_str = datetime.now().strftime('%m월 %d일 %H:%M')
+    # Update timestamp in the header (KST 적용)
+    KST = timezone(timedelta(hours=9))
+    now_str = datetime.now(KST).strftime('%m월 %d일 %H:%M')
     for i, line in enumerate(new_lines):
         if '3. 대학별 경쟁률 요약' in line:
             new_lines[i] = f"## 3. 대학별 경쟁률 요약 ({now_str} 현황 업데이트)"
@@ -74,7 +75,8 @@ def update_markdown(updates):
         f.write('\n'.join(new_lines))
 
 def main():
-    print(f"\n[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 실시간 경쟁률 업데이트 시작...\n")
+    KST = timezone(timedelta(hours=9))
+    print(f"\n[{datetime.now(KST).strftime('%Y-%m-%d %H:%M:%S')}] 실시간 경쟁률 업데이트 시작...\n")
     cache = {}
     updates = {}
     
