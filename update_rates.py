@@ -26,9 +26,11 @@ targets = [
     ('서울여자대학교', '바롬인재면접', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('서울여자대학교', '교과우수자전형', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('서울여자대학교', '교과우수자전형', '행정', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
-    ('경희대학교', '지역균형', '프랑스어', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
-    ('경희대학교', '논술우수자전형', '프랑스어', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
-    ('경희대학교', '논술우수자전형', '러시아어', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교', '지역균형', '아동가족학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교', '지역균형', '사회학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교', '논술우수자전형', '사회학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교', '논술우수자전형', '아동가족학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교', '논술우수자전형', '행정학과', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
     ('한국외국어대학교', '논술', '일본언어문화', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
     ('한국외국어대학교', '논술', '이탈리아어과', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
     ('숭실대학교', 'SSU미래인재전형-면접형', '평생교육', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11010851.html', 'utf-8'),
@@ -103,6 +105,8 @@ def main():
         
         for t in soup.find_all('table'):
             ctx = ''
+            prev = t.find_previous(['h2', 'h3', 'h4', 'div', 'caption'])
+            if prev: ctx += prev.text.strip()
             prev_h2 = t.find_previous_sibling('h2')
             if prev_h2: ctx += prev_h2.text.strip()
             prev_div = t.find_previous_sibling('div')
@@ -113,6 +117,8 @@ def main():
                 first_row = [c.text.strip() for c in rows[0].find_all(['th','td'])]
                 ctx += ' ' + ' '.join(first_row)
             
+            if univ == '경희대학교' and '서울' not in ctx:
+                continue
             if track.replace(' ', '') not in ctx.replace(' ', ''):
                 continue
                 
