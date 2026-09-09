@@ -27,6 +27,8 @@ targets = [
     ('서울여자대학교', '교과우수자전형', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('서울여자대학교', '교과우수자전형', '행정', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('경희대학교', '지역균형', '프랑스어', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교', '논술우수자전형', '프랑스어', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
+    ('경희대학교', '논술우수자전형', '러시아어', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
     ('한국외국어대학교', '논술', '일본언어문화', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
     ('한국외국어대학교', '논술', '이탈리아어과', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
     ('숭실대학교', 'SSU미래인재전형-면접형', '평생교육', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11010851.html', 'utf-8'),
