@@ -76,9 +76,13 @@ def update_markdown(updates):
         
     # Update timestamp in the header (KST 적용)
     KST = timezone(timedelta(hours=9))
-    now_str = datetime.now(KST).strftime('%m월 %d일 %H:%M')
+    now_dt = datetime.now(KST)
+    now_str = now_dt.strftime('%m월 %d일 %H:%M')
+    full_now_str = now_dt.strftime('%Y년 %m월 %d일 %H:%M')
     for i, line in enumerate(new_lines):
-        if '3. 대학별 경쟁률 요약' in line:
+        if '경쟁률 정보 최종 업데이트' in line:
+            new_lines[i] = f"* **경쟁률 정보 최종 업데이트:** {full_now_str} (KST)"
+        elif '3. 대학별 경쟁률 요약' in line:
             new_lines[i] = f"## 3. 대학별 경쟁률 요약 ({now_str} 현황 업데이트)"
 
     with open(md_path, 'w', encoding='utf-8') as f:
