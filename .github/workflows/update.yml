@@ -1,6 +1,9 @@
 name: Update and Deploy Rates
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '0 * * * *' # 매 정각마다 실행
   workflow_dispatch: # 수동 실행 버튼
@@ -40,8 +43,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add 경쟁률_현황.md
-          git commit -m "Auto-update competition rates" || echo "No changes to commit"
+          git add 경쟁률_현황.md index.html
+          git commit -m "Auto-update competition rates [skip ci]" || echo "No changes to commit"
           git push
 
       - name: Setup Pages
