@@ -24,7 +24,8 @@ targets = [
     ('이화여자대학교', '논술', '인문Ⅰ', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11202121.html', 'utf-8'),
     ('덕성여자대학교', '덕성인재전형Ⅱ', '글로벌융합대학(인문사회)', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10530631.html', 'utf-8'),
     ('서울여자대학교', '바롬인재면접', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
-    ('서울여자대학교', '논술우수자', '자유전공', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
+    ('서울여자대학교', '교과우수자전형', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
+    ('서울여자대학교', '교과우수자전형', '행정', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('경희대학교', '지역균형', '프랑스어', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
     ('한국외국어대학교', '논술', '일본언어문화', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
     ('한국외국어대학교', '논술', '이탈리아어과', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
@@ -52,16 +53,23 @@ def update_markdown(updates):
             cells = [c.strip() for c in line.split('|')]
             if len(cells) > 6:
                 univ = cells[1].replace('**', '').strip()
+                track = cells[2].replace('**', '').strip()
                 dept = cells[3].replace('**', '').strip()
-                # Use a more flexible matching logic
-                for k, v in updates.items():
-                    if k.startswith(univ) and dept in k:
-                        quota, app, ratio = v
-                        cells[4] = quota
-                        cells[5] = app
-                        cells[6] = ratio
-                        line = ' | '.join(cells)
-                        break
+                
+                for (u, t, d), (quota, app, ratio) in updates.items():
+                    if u in univ:
+                        if d in dept or dept in d:
+                            t_norm = re.sub(r'[^\w]', '', t)
+                            track_norm = re.sub(r'[^\w]', '', track)
+                            if (t_norm in track_norm or track_norm in t_norm or
+                                ('교과' in t_norm and '교과' in track_norm) or
+                                ('바롬' in t_norm and '바롬' in track_norm) or
+                                ('논술' in t_norm and '논술' in track_norm)):
+                                cells[4] = quota
+                                cells[5] = app
+                                cells[6] = ratio
+                                line = ' | '.join(cells)
+                                break
         new_lines.append(line)
         
     # Update timestamp in the header (KST 적용)
@@ -109,7 +117,7 @@ def main():
                     app = cells[-2]
                     quota = cells[-3]
                     
-                    updates[univ+dept] = (quota + "명", app + "명", ratio)
+                    updates[(univ, track, dept)] = (quota + "명", app + "명", ratio)
                     found = True
                     break
             

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2027 대학 입시 경쟁률 대시보드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --accent: #3b82f6;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            margin: 0; padding: 20px; line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 40px;
+            background: var(--surface-color);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+        }
+        h1 { color: #fff; font-size: 2.5rem; background: linear-gradient(to right, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2, h3 { color: #fff; }
+        h2 { border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 25px 0; border-radius: 12px; overflow: hidden; }
+        th, td { padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--border-color); background: rgba(30, 41, 59, 0.4); }
+        th { background: rgba(15, 23, 42, 0.8); font-weight: 600; color: #cbd5e1; text-transform: uppercase; font-size: 0.85rem; }
+        tr:hover td { background: rgba(51, 65, 85, 0.6); }
+        a { color: #60a5fa; text-decoration: none; }
+        a:hover { color: #93c5fd; }
+        blockquote { margin: 20px 0; padding: 20px 24px; border-left: 4px solid var(--accent); background: rgba(59, 130, 246, 0.1); border-radius: 0 12px 12px 0; }
+        @media (max-width: 768px) {
+            .container { padding: 20px; border-radius: 16px; }
+            table { display: block; overflow-x: auto; white-space: nowrap; }
+            h1 { font-size: 2rem; }
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .update-time {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .update-time strong {
+            color: #34d399;
+            font-weight: 600;
+        }
+        .refresh-btn {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4);
+        }
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px -2px rgba(59, 130, 246, 0.6);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-actions">
+            <div class="update-time">
+                <span>⏱️ 마지막 갱신:</span>
+                <strong>09월 09일 23:01 현황 업데이트</strong>
+            </div>
+            <a href="https://github.com/ruknabid/susi-dashboard/actions/workflows/update.yml" target="_blank" class="refresh-btn">
+                🔄 강제 실시간 갱신 (스위치 켜기)
+            </a>
+        </div>
+        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 30px; text-align: right;">
+            * 버튼 클릭 후 <strong>Run workflow</strong> 버튼을 누르시면 30초 뒤 표가 갱신됩니다.
+        </div>
+        <h1>수시 모집 경쟁률 현황</h1>
+<h2>1. 개요</h2>
+<ul>
+<li><strong>작성일:</strong> 2026년 9월 8일 (원서 접수 1일차)</li>
+<li><strong>마지막 업데이트:</strong> 2026년 9월 8일 22:00</li>
+<li><strong>원서 접수 마감일:</strong> 2026년 9월 11일 ~ 13일 (대학별 상이하므로 반드시 개별 마감 시간 확인 필수)</li>
+<li><strong>주요 타겟 대학:</strong> </li>
+</ul>
+<h2>2. 대학별 경쟁률 확인 링크</h2>
+<ul>
+<li><a href="https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html">서울여자대학교</a></li>
+<li><a href="https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11010851.html">숭실대학교</a></li>
+<li><a href="https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html">가천대학교</a></li>
+<li><a href="https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10530631.html">덕성여자대학교</a></li>
+<li><a href="https://ratio.uwayapply.com/power/?ratioURL=%2F%2Fratio.uwayapply.com%2FSl5KOjhMSmYlJjomSjdmVGY%3D&amp;applyURL=http%3A%2F%2Fipsi2.uwayapply.com%2F2027%2Fsusi2%2Fcau%2F%3FCHA%3D1&amp;ratioNM=%C1%DF%BE%D3%B4%EB%C7%D0%B1%B3&amp;univURL=http://www.cau.ac.kr">중앙대학교</a></li>
+<li><a href="https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10920591.html">성균관대학교</a></li>
+<li><a href="https://ratio.uwayapply.com/power/?ratioURL=%2F%2Fratio.uwayapply.com%2FSl5KJmg6fEpmJSY6Jko3ZlRm&amp;applyURL=http%3A%2F%2Fipsi3.uwayapply.com%2F2027%2Fsusi2%2Fhufs%2F%3FCHA%3D1&amp;ratioNM=%C7%D1%B1%B9%BF%DC%B1%B9%BE%EE%B4%EB%C7%D0%B1%B3&amp;univURL=http://www.hufs.ac.kr">한국외국어대학교</a></li>
+<li><a href="https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11202121.html">이화여자대학교</a></li>
+<li><a href="https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10950721.html">세종대학교</a></li>
+<li><a href="https://ratio.uwayapply.com/power/?ratioURL=%2F%2Fratio.uwayapply.com%2FSl5KOnw5SmYlJjomSjdmVGY%3D&amp;applyURL=http%3A%2F%2Fipsi1.uwayapply.com%2F2027%2Fsusi2%2Fkhu%2F%3FCHA%3D1&amp;ratioNM=%B0%E6%C8%F1%B4%EB%C7%D0%B1%B3&amp;univURL=http://www.khu.ac.kr">경희대학교</a></li>
+</ul>
+<h2>3. 대학별 경쟁률 요약 (09월 09일 23:01 현황 업데이트)</h2>
+<h3>[메인 지원 후보 6개 대학/학과]</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">대학명</th>
+<th style="text-align: left;">전형명</th>
+<th style="text-align: left;">모집단위</th>
+<th style="text-align: left;">모집인원</th>
+<th style="text-align: left;">지원인원</th>
+<th style="text-align: left;">실시간 경쟁률</th>
+<th style="text-align: left;">전년도 경쟁률</th>
+<th style="text-align: left;">비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">중앙대학교</td>
+<td style="text-align: left;">학생부종합(성장형인재)</td>
+<td style="text-align: left;">공공인재학부</td>
+<td style="text-align: left;">4명</td>
+<td style="text-align: left;">118명</td>
+<td style="text-align: left;">29.50 : 1</td>
+<td style="text-align: left;">[성장형] 4명 (35.3:1)</td>
+<td style="text-align: left;">3합 6 최저 신설</td>
+</tr>
+<tr>
+<td style="text-align: left;">덕성여자대학교</td>
+<td style="text-align: left;">덕성인재Ⅱ</td>
+<td style="text-align: left;">글로벌융합대학</td>
+<td style="text-align: left;">74명</td>
+<td style="text-align: left;">408명</td>
+<td style="text-align: left;">5.51 : 1</td>
+<td style="text-align: left;">[덕성인재Ⅱ] 64명 (13.6:1)</td>
+<td style="text-align: left;">수능 후 면접 안전판</td>
+</tr>
+<tr>
+<td style="text-align: left;">가천대학교</td>
+<td style="text-align: left;">학생부우수자(교과)</td>
+<td style="text-align: left;">심리학과</td>
+<td style="text-align: left;">6명</td>
+<td style="text-align: left;">23명</td>
+<td style="text-align: left;">3.83 : 1</td>
+<td style="text-align: left;">[학생부우수자] 6명 (11.6:1)</td>
+<td style="text-align: left;">수시 납치 주의</td>
+</tr>
+<tr>
+<td style="text-align: left;">가천대학교</td>
+<td style="text-align: left;">지역균형(교과)</td>
+<td style="text-align: left;">자유전공</td>
+<td style="text-align: left;">321명</td>
+<td style="text-align: left;">1,641명</td>
+<td style="text-align: left;">5.11 : 1</td>
+<td style="text-align: left;">[지역균형] 321명 (15.88:1)</td>
+<td style="text-align: left;">26년 폭발(3.18) ➡️ 펑크 턴 노림</td>
+</tr>
+<tr>
+<td style="text-align: left;">숭실대학교</td>
+<td style="text-align: left;">SSU미래인재(학종)</td>
+<td style="text-align: left;">사회복지학부</td>
+<td style="text-align: left;">8명</td>
+<td style="text-align: left;">104명</td>
+<td style="text-align: left;">13.00 : 1</td>
+<td style="text-align: left;">[SSU미래인재] 8명 (16.5:1)</td>
+<td style="text-align: left;">진로역량 50%</td>
+</tr>
+<tr>
+<td style="text-align: left;">한국외국어대학교</td>
+<td style="text-align: left;">논술</td>
+<td style="text-align: left;">베트남학과 등</td>
+<td style="text-align: left;">4명</td>
+<td style="text-align: left;">32명</td>
+<td style="text-align: left;">8.00 : 1</td>
+<td style="text-align: left;">[논술] 5명 (25.4:1)</td>
+<td style="text-align: left;">영어 제시문 강점</td>
+</tr>
+</tbody>
+</table>
+<h3>[예비 후보 학교/학과]</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">대학명</th>
+<th style="text-align: left;">전형명</th>
+<th style="text-align: left;">모집단위</th>
+<th style="text-align: left;">모집인원</th>
+<th style="text-align: left;">지원인원</th>
+<th style="text-align: left;">실시간 경쟁률</th>
+<th style="text-align: left;">전년도 경쟁률</th>
+<th style="text-align: left;">비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">이화여자대학교</td>
+<td style="text-align: left;">논술</td>
+<td style="text-align: left;">인문 Ⅰ</td>
+<td style="text-align: left;">(확인 요망)</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">[논술] - (38.5:1)</td>
+<td style="text-align: left;">가천대 교과 1순위 대체</td>
+</tr>
+<tr>
+<td style="text-align: left;">세종대학교</td>
+<td style="text-align: left;">지역균형(교과)</td>
+<td style="text-align: left;">자유전공학부</td>
+<td style="text-align: left;">122명</td>
+<td style="text-align: left;">324명</td>
+<td style="text-align: left;">2.66 : 1</td>
+<td style="text-align: left;">[지역균형] 223명 (15.57:1)</td>
+<td style="text-align: left;">2합 5 최저, 70%컷 2.26</td>
+</tr>
+<tr>
+<td style="text-align: left;">서울여자대학교</td>
+<td style="text-align: left;">바롬인재면접</td>
+<td style="text-align: left;">사회복지학과</td>
+<td style="text-align: left;">8명</td>
+<td style="text-align: left;">94명</td>
+<td style="text-align: left;">11.75 : 1</td>
+<td style="text-align: left;">[바롬인재] 8명 (26.4:1)</td>
+<td style="text-align: left;">수능 후 면접 안전판</td>
+</tr>
+<tr>
+<td style="text-align: left;">서울여자대학교</td>
+<td style="text-align: left;">교과우수자(교과)</td>
+<td style="text-align: left;">사회복지학과</td>
+<td style="text-align: left;">6명</td>
+<td style="text-align: left;">8명</td>
+<td style="text-align: left;">1.33 : 1</td>
+<td style="text-align: left;">[교과우수자] 6명 (16.2:1)</td>
+<td style="text-align: left;">12과목 2.9등급 환산, 교과 합격안정성 1위</td>
+</tr>
+<tr>
+<td style="text-align: left;">서울여자대학교</td>
+<td style="text-align: left;">교과우수자(교과)</td>
+<td style="text-align: left;">행정학과</td>
+<td style="text-align: left;">7명</td>
+<td style="text-align: left;">24명</td>
+<td style="text-align: left;">3.43 : 1</td>
+<td style="text-align: left;">[교과우수자] 7명 (9.67:1)</td>
+<td style="text-align: left;">12과목 2.9등급 환산, 충원율 400%대 합격안정권</td>
+</tr>
+<tr>
+<td style="text-align: left;">경희대학교</td>
+<td style="text-align: left;">지역균형(교과)</td>
+<td style="text-align: left;">프랑스어학과</td>
+<td style="text-align: left;">3명</td>
+<td style="text-align: left;">4명</td>
+<td style="text-align: left;">1.33 : 1</td>
+<td style="text-align: left;">[지역균형] 3명 (14.7:1)</td>
+<td style="text-align: left;">2합 5 펑크 노림</td>
+</tr>
+<tr>
+<td style="text-align: left;">한국외국어대학교</td>
+<td style="text-align: left;">논술</td>
+<td style="text-align: left;">일본언어문화학부</td>
+<td style="text-align: left;">8명</td>
+<td style="text-align: left;">217명</td>
+<td style="text-align: left;">27.13 : 1</td>
+<td style="text-align: left;">[논술] 10명 (32.5:1)</td>
+<td style="text-align: left;">외대 베트남 대체 1순위</td>
+</tr>
+<tr>
+<td style="text-align: left;">한국외국어대학교</td>
+<td style="text-align: left;">논술</td>
+<td style="text-align: left;">이탈리아어과</td>
+<td style="text-align: left;">4명</td>
+<td style="text-align: left;">39명</td>
+<td style="text-align: left;">9.75 : 1</td>
+<td style="text-align: left;">[논술] 6명 (26.3:1)</td>
+<td style="text-align: left;">외대 베트남 대체 2순위</td>
+</tr>
+<tr>
+<td style="text-align: left;">숭실대학교</td>
+<td style="text-align: left;">SSU미래인재</td>
+<td style="text-align: left;">평생교육학과</td>
+<td style="text-align: left;">9명</td>
+<td style="text-align: left;">48명</td>
+<td style="text-align: left;">5.33 : 1</td>
+<td style="text-align: left;">[SSU미래인재] 9명 (12.8:1)</td>
+<td style="text-align: left;">숭실대 사회복지 대체 1</td>
+</tr>
+<tr>
+<td style="text-align: left;">숭실대학교</td>
+<td style="text-align: left;">SSU미래인재</td>
+<td style="text-align: left;">정치외교학과</td>
+<td style="text-align: left;">5명</td>
+<td style="text-align: left;">81명</td>
+<td style="text-align: left;">16.20 : 1</td>
+<td style="text-align: left;">[SSU미래인재] 5명 (18.2:1)</td>
+<td style="text-align: left;">숭실대 사회복지 대체 2</td>
+</tr>
+<tr>
+<td style="text-align: left;">세종대학교</td>
+<td style="text-align: left;">세종인재(면접형)</td>
+<td style="text-align: left;">행정학과</td>
+<td style="text-align: left;">4명</td>
+<td style="text-align: left;">6명</td>
+<td style="text-align: left;">1.50 : 1</td>
+<td style="text-align: left;">[세종인재] 11명 (11.4:1)</td>
+<td style="text-align: left;">세종대 교과 대체 1순위</td>
+</tr>
+<tr>
+<td style="text-align: left;">세종대학교</td>
+<td style="text-align: left;">세종인재(면접형)</td>
+<td style="text-align: left;">법학과</td>
+<td style="text-align: left;">4명</td>
+<td style="text-align: left;">7명</td>
+<td style="text-align: left;">1.75 : 1</td>
+<td style="text-align: left;">[세종인재] 12명 (12.1:1)</td>
+<td style="text-align: left;">세종대 교과 대체 2순위</td>
+</tr>
+<tr>
+<td style="text-align: left;">가천대학교</td>
+<td style="text-align: left;">학생부우수자(교과)</td>
+<td style="text-align: left;">사회복지학과</td>
+<td style="text-align: left;">6명</td>
+<td style="text-align: left;">28명</td>
+<td style="text-align: left;">4.67 : 1</td>
+<td style="text-align: left;">[학생부우수자] 8명 (15.1:1)</td>
+<td style="text-align: left;">수시 납치 주의</td>
+</tr>
+<tr>
+<td style="text-align: left;">가천대학교</td>
+<td style="text-align: left;">학생부우수자(교과)</td>
+<td style="text-align: left;">법과대학</td>
+<td style="text-align: left;">17명</td>
+<td style="text-align: left;">81명</td>
+<td style="text-align: left;">4.76 : 1</td>
+<td style="text-align: left;">[학생부우수자] 25명 (12.4:1)</td>
+<td style="text-align: left;">수시 납치 주의</td>
+</tr>
+<tr>
+<td style="text-align: left;">성균관대학교</td>
+<td style="text-align: left;">융합인재(학종)</td>
+<td style="text-align: left;">인문과학계열</td>
+<td style="text-align: left;">30명</td>
+<td style="text-align: left;">371명</td>
+<td style="text-align: left;">12.37 : 1</td>
+<td style="text-align: left;">[구 융합형] 35명 (22.7:1)</td>
+<td style="text-align: left;">최저 신설 빵꾸 노림</td>
+</tr>
+</tbody>
+</table>
+<h2>4. 주요 특징 및 분석</h2>
+<ul>
+<li>(경쟁률 추이 및 특이사항 등 분석 내용 작성)</li>
+</ul>
+<h2>5. 지원 전략 수정 사항 (필요 시)</h2>
+<ul>
+<li>(경쟁률에 따른 전략 변경 사항 작성)</li>
+</ul>
+<h2>6. 전형별 최근 4개년 입시 결과 (경쟁률/합격컷/충원율)</h2>
+<blockquote>
+<p><strong>안내:</strong> 2026학년도 등 과거 입시 결과는 지원 전략상 중요도가 높은 <strong>핵심 타겟 전형</strong>을 중심으로 수록했습니다. 다른 전형(계열)의 입결도 필요하신 경우 말씀해 주시면 추가해 드리겠습니다.</p>
+</blockquote>
+<h3>성균관대학교 (서울) - 인문과학계열</h3>
+<ul>
+<li><strong>[융합인재(학종) / 구 융합형]</strong></li>
+<li><strong>2027:</strong> (수능 최저 3합 6 전격 신설, 실질 경쟁률 및 70% 합격컷 대폭 하락 예상)</li>
+<li><strong>2026:</strong> (최저 없음) 정원 35명, 22.74 : 1</li>
+</ul>
+<h3>중앙대학교 (서울) - 공공인재학부</h3>
+<ul>
+<li><strong>[학생부종합(성장형인재/구 융합형)]</strong></li>
+<li><strong>2026:</strong> (신설 전형으로 데이터 없음)</li>
+<li><strong>2025:</strong> 정원 8명, 35.3 : 1, 예비 8번 (100%), 70%컷 1.89</li>
+<li><strong>2024:</strong> 정원 12명, 23.4 : 1, 예비 18번 (150%), 70%컷 2.30</li>
+</ul>
+<h3>세종대학교 (서울) - 자유전공학부</h3>
+<ul>
+<li><strong>[지역균형(교과)]</strong></li>
+<li><strong>2026:</strong> (데이터 갱신 중)</li>
+<li><strong>2025:</strong> 정원 223명, 15.57 : 1, 예비 343번 (153.8%), 70%컷 2.26</li>
+</ul>
+<h3>가천대학교 (글로벌) - 자유전공 / 심리학과 / 사회복지학과 / 법과대학</h3>
+<ul>
+<li><strong>[지역균형(교과)] - 자유전공학부</strong></li>
+<li><strong>2026:</strong> 정원 321명, 15.8 : 1, 예비 121번, 70%컷 <strong>3.18 (폭발)</strong></li>
+<li><strong>2025:</strong> 정원 321명, 20.5 : 1, 예비 107번, 70%컷 <strong>5.14 (초대형 펑크)</strong></li>
+<li><strong>2024:</strong> 정원 5명, 28.6 : 1, 예비 2번, 70%컷 3.27</li>
+<li><strong>[학생부우수자(교과)] - 심리학과</strong></li>
+<li><strong>2026:</strong> 정원 6명, 11.6 : 1, 예비 7번 (116%), 70%컷 2.39</li>
+<li><strong>2025:</strong> 정원 6명, 11.8 : 1, 예비 9번 (150%), 70%컷 2.55</li>
+<li><strong>2024:</strong> 정원 6명, 15.0 : 1, 예비 20번 (333%), 70%컷 2.71</li>
+<li><strong>[학생부우수자(교과)] - 사회복지학과</strong></li>
+<li><strong>2026:</strong> 정원 8명, 15.1 : 1, 예비 14번 (175%), 70%컷 2.70</li>
+<li><strong>2025:</strong> 정원 8명, 14.8 : 1, 예비 15번 (188%), 70%컷 2.85</li>
+<li><strong>2024:</strong> 정원 9명, 16.2 : 1, 예비 18번 (200%), 70%컷 2.79</li>
+<li><strong>[학생부우수자(교과)] - 법과대학</strong></li>
+<li><strong>2026:</strong> 정원 25명, 12.4 : 1, 예비 38번 (152%), 70%컷 2.68</li>
+<li><strong>2025:</strong> 정원 25명, 11.9 : 1, 예비 41번 (164%), 70%컷 2.74</li>
+<li><strong>2024:</strong> 정원 26명, 13.5 : 1, 예비 45번 (173%), 70%컷 2.72</li>
+</ul>
+<h3>숭실대학교 (서울) - 사회복지학부 / 평생교육학과 / 정치외교학과</h3>
+<ul>
+<li><strong>[SSU미래인재(학종)] - 사회복지학부</strong></li>
+<li><strong>2026:</strong> 정원 8명, 16.5 : 1, 예비 12번 (150%), 70%컷 2.65</li>
+<li><strong>2025:</strong> 정원 8명, 17.3 : 1, 예비 9번 (112%), 70%컷 2.72</li>
+<li><strong>2024:</strong> 정원 10명, 27.3 : 1, 예비 11번 (110%), 70%컷 2.95</li>
+<li><strong>[SSU미래인재(학종)] - 평생교육학과</strong></li>
+<li><strong>2026:</strong> 정원 9명, 12.8 : 1, 예비 11번 (122%), 70%컷 3.32</li>
+<li><strong>2025:</strong> 정원 9명, 11.4 : 1, 예비 10번 (111%), 70%컷 3.15</li>
+<li><strong>2024:</strong> 정원 10명, 13.9 : 1, 예비 13번 (130%), 70%컷 3.48</li>
+<li><strong>[SSU미래인재(학종)] - 정치외교학과</strong></li>
+<li><strong>2026:</strong> 정원 5명, 18.2 : 1, 예비 4번 (80%), 70%컷 2.78</li>
+<li><strong>2025:</strong> 정원 5명, 14.6 : 1, 예비 6번 (120%), 70%컷 3.31</li>
+<li><strong>2024:</strong> 정원 6명, 16.5 : 1, 예비 5번 (83%), 70%컷 2.85</li>
+</ul>
+<h3>한국외국어대학교 (서울) - 베트남 / 일본언어문화 / 이탈리아어과</h3>
+<ul>
+<li><strong>[일반 논술] - 베트남학과 등</strong></li>
+<li><strong>2026:</strong> 정원 5명, 25.4 : 1 (실질 10.2:1), 예비 2번 (40%)</li>
+<li><strong>2025:</strong> 정원 5명, 22.8 : 1 (실질 9.5:1), 예비 1번 (20%)</li>
+<li><strong>2024:</strong> 정원 5명, 28.1 : 1 (실질 12.1:1), 예비 2번 (40%)</li>
+<li><strong>[일반 논술] - 일본언어문화학부</strong></li>
+<li><strong>2026:</strong> 정원 10명, 32.5 : 1 (실질 11.2:1), 예비 5번 (50%), 최저충족 34.5%</li>
+<li><strong>2025:</strong> 정원 10명, 30.1 : 1 (실질 10.4:1), 예비 4번 (40%), 최저충족 34.8%</li>
+<li><strong>2024:</strong> 정원 10명, 28.5 : 1 (실질 9.8:1), 예비 3번 (30%), 최저충족 35.1%</li>
+<li><strong>[일반 논술] - 이탈리아어과</strong></li>
+<li><strong>2026:</strong> 정원 6명, 26.3 : 1 (실질 9.0:1), 예비 2번 (33%), 논술평균 965.2점</li>
+<li><strong>2025:</strong> 정원 6명, 24.8 : 1 (실질 8.2:1), 예비 2번 (33%)</li>
+<li><strong>2024:</strong> 정원 6명, 25.1 : 1 (실질 8.7:1), 예비 1번 (17%)</li>
+</ul>
+<h3>이화여자대학교 - 인문 Ⅰ</h3>
+<ul>
+<li><strong>[논술전형]</strong></li>
+<li><strong>2026:</strong> 38.5 : 1 (실질 11.8:1), 예비 충원율 18%</li>
+<li><strong>2025:</strong> 42.1 : 1 (실질 8.5:1), 예비 충원율 15% (구 3합6)</li>
+<li><strong>2024:</strong> 40.8 : 1 (실질 9.1:1), 예비 충원율 17%</li>
+</ul>
+<h3>덕성여자대학교 - 글로벌융합대학 (인문사회)</h3>
+<ul>
+<li><strong>[덕성인재Ⅱ (학종 면접형)]</strong></li>
+<li><strong>2026:</strong> 정원 64명, 13.6 : 1, 예비 56번 (88%), 70%컷 3.61</li>
+<li><strong>2025:</strong> 정원 64명, 18.6 : 1, 예비 50번 (78%), 70%컷 3.42</li>
+<li><strong>2024:</strong> 정원 77명, 18.5 : 1, 예비 76번 (99%), 70%컷 3.53</li>
+<li><strong>2023:</strong> 정원 79명, 15.0 : 1, 예비 약 65번, 70%컷 3.71</li>
+</ul>
+<h3>서울여자대학교 - 사회복지학과 / 행정학과</h3>
+<ul>
+<li><strong>[교과우수자 (교과 100%)] - 사회복지학과 / 행정학과</strong></li>
+<li><strong>사회복지학과:</strong><ul>
+<li><strong>2026:</strong> 정원 6명, 16.2 : 1 (실질 12.3:1), 예비 16번 (267%), 50%컷 2.78 / 70%컷 <strong>2.96</strong> (1,000점 환산 98.04점)</li>
+<li><strong>2025:</strong> 정원 7명, 8.3 : 1 (실질 5.9:1), 예비 19번 (271%), 평균 3.20 / 최저 <strong>3.80</strong></li>
+<li><strong>2024:</strong> 정원 7명, 4.9 : 1 (실질 2.9:1), 예비 11번 (157%), 70%컷 <strong>3.20</strong></li>
+<li><strong>2023:</strong> 정원 7명, 11.4 : 1, 예비 12번 (171%), 70%컷 <strong>2.50</strong></li>
+</ul>
+</li>
+<li><strong>행정학과:</strong><ul>
+<li><strong>2026:</strong> 정원 7명, 9.67 : 1, 예비 30번 (429%), 50%컷 2.85 / 70%컷 <strong>3.05</strong></li>
+<li><strong>2025:</strong> 정원 7명, 9.67 : 1, 예비 28번 (400%), 70%컷 <strong>3.12</strong></li>
+<li><strong>2024:</strong> 정원 8명, 8.83 : 1, 예비 25번 (313%), 70%컷 <strong>3.21</strong></li>
+<li><strong>2023:</strong> 정원 8명, 9.50 : 1, 예비 22번 (275%), 70%컷 <strong>2.89</strong></li>
+</ul>
+</li>
+<li><em>(※ 서울여대 교과 산출식: 국·영·수·사/과 4개 교과별 상위 3과목씩 총 12과목만 반영 ➡️ 송연이 환산 내신 약 2.90~3.00등급으로 안정 합격선, 특히 행정학과는 충원율이 400% 이상 폭발하여 추가합격 기회가 매우 높음)</em></li>
+<li><strong>[바롬인재면접 (학종)] - 사회복지학과</strong></li>
+<li><strong>2026:</strong> 정원 8명, 26.4 : 1, 예비 14번 (175%), 평균 3.7 / 최저 5.5</li>
+<li><strong>2025:</strong> 정원 8명, 25.6 : 1, 예비 7번 (88%), 평균 3.5 / 최저 6.7</li>
+<li><strong>2024:</strong> 정원 6명, 26.8 : 1, 예비 8번 (133%), 평균 3.6 / 최저 6.6</li>
+<li><strong>2023:</strong> 정원 6명, 50.5 : 1, 예비 3번 (50%), 평균 3.5 / 최저 4.2</li>
+</ul>
+<h3>경희대학교 - 프랑스어학과</h3>
+<ul>
+<li><strong>[지역균형 (교과)]</strong></li>
+<li><strong>2026:</strong> 정원 3명, 14.7 : 1, 예비 2번 (67%), 70%컷 1.91 (폭발)</li>
+<li><strong>2025:</strong> 정원 3명, 12.3 : 1, 예비 1번 (33%), 70%컷 2.45</li>
+<li><strong>2024:</strong> 정원 4명, 11.5 : 1, 예비 3번 (75%), 70%컷 2.68</li>
+</ul>
+<h3>세종대학교 - 행정학과 / 법학과</h3>
+<ul>
+<li><strong>[세종인재 (면접형)] - 행정학과</strong></li>
+<li><strong>2026:</strong> 정원 11명, 11.4 : 1, 예비 14번 (127%), 70%컷 2.85</li>
+<li><strong>2025:</strong> 정원 11명, 10.8 : 1, 예비 12번 (109%), 70%컷 3.12</li>
+<li><strong>2024:</strong> 정원 12명, 12.3 : 1, 예비 15번 (125%), 70%컷 2.94</li>
+<li><strong>[세종인재 (면접형)] - 법학과</strong></li>
+<li><strong>2026:</strong> 정원 12명, 12.1 : 1, 예비 13번 (108%), 70%컷 2.89</li>
+<li><strong>2025:</strong> 정원 12명, 11.5 : 1, 예비 11번 (92%), 70%컷 3.05</li>
+<li><strong>2024:</strong> 정원 13명, 13.0 : 1, 예비 14번 (108%), 70%컷 2.98</li>
+</ul>
+    </div>
+</body>
+</html>
