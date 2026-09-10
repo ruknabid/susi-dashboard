@@ -14,14 +14,12 @@ def get_html(url, encoding):
         return ''
 
 targets = [
-    ('중앙대학교', '성장형인재', '공공인재학부', 'https://ratio.uwayapply.com/Sl5KOjhMSmYlJjomSjdmVGY=', 'euc-kr'),
     ('세종대학교', '지역균형', '자유전공', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10950721.html', 'utf-8'),
     ('가천대학교', '학생부우수자', '심리학과', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html', 'utf-8'),
     ('가천대학교', '지역균형', '자유전공', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10190711.html', 'utf-8'),
     ('숭실대학교', 'SSU미래인재전형-면접형', '사회복지학부', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11010851.html', 'utf-8'),
     ('한국외국어대학교', '논술', '베트남학과', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
     ('한국외국어대학교', '논술', '인도·남아시아', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
-    ('이화여자대학교', '논술', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11202121.html', 'utf-8'),
     ('덕성여자대학교', '덕성인재전형Ⅱ', '글로벌융합대학(인문사회)', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10530631.html', 'utf-8'),
     ('서울여자대학교', '바롬인재면접', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('서울여자대학교', '교과우수자전형', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),

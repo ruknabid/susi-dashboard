@@ -1,3 +1,5 @@
 __pycache__/
 *.pyc
 .DS_Store
+backup/
+4years_data.md

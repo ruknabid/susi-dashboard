@@ -234,14 +234,6 @@ def build():
                 <span>🚨 2027 수시 원서접수 마감 시한 핵심 체크</span>
             </div>
             <div class="deadline-grid">
-                <div class="deadline-card normal">
-                    <div class="deadline-card-header">
-                        <span class="univ">이화여자대학교</span>
-                        <span class="dday" style="background:#64748b;">접수 마감 완료</span>
-                    </div>
-                    <div class="time">9월 10일(목) 17:00 마감</div>
-                    <div class="desc">✅ 접수 종료 (사회복지 51.17:1, 인문I 전체 57.95:1 최종 마감)</div>
-                </div>
                 <div class="deadline-card urgent">
                     <div class="deadline-card-header">
                         <span class="univ">한국외국어대학교</span>
@@ -252,11 +244,11 @@ def build():
                 </div>
                 <div class="deadline-card warning">
                     <div class="deadline-card-header">
-                        <span class="univ">기타 8개 대학</span>
+                        <span class="univ">기타 7개 대학</span>
                         <span class="dday">내일 최종마감 ⏳</span>
                     </div>
                     <div class="time">9월 11일(금) 18:00 마감</div>
-                    <div class="desc">중앙, 경희, 성균관, 숭실, 세종, 서울여, 덕성여, 가천대 (오후 3~4시 결제 권장)</div>
+                    <div class="desc">경희, 성균관, 숭실, 세종, 서울여, 덕성여, 가천대 (오후 3~4시 결제 권장)</div>
                 </div>
             </div>
         </div>
