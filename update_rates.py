@@ -136,7 +136,9 @@ def main():
             
             if '경희대학교' in univ and '국제' not in ctx:
                 continue
-            if track.replace(' ', '') not in ctx.replace(' ', ''):
+            t_core = re.sub(r'전형|[^\w]', '', track)
+            c_core = re.sub(r'전형|[^\w]', '', ctx)
+            if t_core not in c_core and track.replace(' ', '') not in ctx.replace(' ', ''):
                 continue
                 
             for r in rows:
