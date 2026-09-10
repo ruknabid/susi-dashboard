@@ -21,7 +21,7 @@ targets = [
     ('숭실대학교', 'SSU미래인재전형-면접형', '사회복지학부', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11010851.html', 'utf-8'),
     ('한국외국어대학교', '논술', '베트남학과', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
     ('한국외국어대학교', '논술', '인도·남아시아', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
-    ('이화여자대학교', '논술', '인문Ⅰ', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11202121.html', 'utf-8'),
+    ('이화여자대학교', '논술', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio11202121.html', 'utf-8'),
     ('덕성여자대학교', '덕성인재전형Ⅱ', '글로벌융합대학(인문사회)', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10530631.html', 'utf-8'),
     ('서울여자대학교', '바롬인재면접', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('서울여자대학교', '교과우수자전형', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
@@ -65,18 +65,34 @@ def update_markdown(updates):
                 
                 for (u, t, d), (quota, app, ratio) in updates.items():
                     if u in univ or univ in u:
-                        if d in dept or dept in d:
-                            t_norm = re.sub(r'[^\w]', '', t)
-                            track_norm = re.sub(r'[^\w]', '', track)
-                            if (t_norm in track_norm or track_norm in t_norm or
-                                ('교과' in t_norm and '교과' in track_norm) or
-                                ('바롬' in t_norm and '바롬' in track_norm) or
-                                ('논술' in t_norm and '논술' in track_norm)):
-                                cells[4] = quota
-                                cells[5] = app
-                                cells[6] = ratio
-                                line = ' | '.join(cells)
+                        # 학과 매칭
+                        dept_match = (d in dept or dept in d or 
+                                      ('사회복지' in d and '사회복지' in dept) or 
+                                      ('글로벌융합' in d and '글로벌융합' in dept) or
+                                      ('자유전공' in d and '자유전공' in dept))
+                        if not dept_match:
+                            continue
+                            
+                        # 전형 매칭
+                        t_norm = re.sub(r'[^\w]', '', t)
+                        track_norm = re.sub(r'[^\w]', '', track)
+                        track_match = (t_norm in track_norm or track_norm in t_norm)
+                        
+                        keywords = ['성장형', '지역균형', '학생부우수자', '덕성인재', 'SSU', '바롬', '교과우수자', '세종인재', '융합인재', '논술']
+                        for k in keywords:
+                            if k in t and k in track:
+                                if '덕성인재' in k:
+                                    track_match = ('Ⅰ' in t and 'Ⅰ' in track) or ('Ⅱ' in t and 'Ⅱ' in track)
+                                else:
+                                    track_match = True
                                 break
+                                
+                        if track_match:
+                            cells[4] = quota
+                            cells[5] = app
+                            cells[6] = ratio
+                            line = ' | '.join(cells)
+                            break
         new_lines.append(line)
         
     # Update timestamp in the header (KST 적용)
