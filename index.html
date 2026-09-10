@@ -44,6 +44,100 @@
         a:hover { color: #93c5fd; text-decoration: underline; }
         blockquote { margin: 20px 0; padding: 20px 24px; border-left: 4px solid var(--accent); background: rgba(59, 130, 246, 0.1); border-radius: 0 12px 12px 0; }
 
+        /* 원서 접수 진행도 위젯 */
+        .progress-banner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .progress-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #34d399;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .progress-badge {
+            font-size: 0.85rem;
+            font-weight: 800;
+            background: rgba(16, 185, 129, 0.25);
+            color: #34d399;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            border: 1px solid rgba(16, 185, 129, 0.5);
+        }
+        .progress-bar-bg {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 9999px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            height: 100%;
+            width: 33.3%;
+            border-radius: 9999px;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+        }
+        .progress-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 10px;
+            font-size: 0.88rem;
+        }
+        .progress-card-item {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 상태 뱃지 */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+        .status-badge.paid {
+            background: rgba(16, 185, 129, 0.22);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.6);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+        }
+        .status-badge.review {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+            border: 1px solid rgba(245, 158, 11, 0.5);
+        }
+        .status-badge.pending {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+        .status-badge.backup {
+            background: rgba(148, 163, 184, 0.15);
+            color: #cbd5e1;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
         /* 긴급 마감 배너 카드 */
         .deadline-alert-banner {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.15));
@@ -202,11 +296,36 @@
         <div class="header-actions">
             <div class="update-time">
                 <span>⏱️ 경쟁률 최종 갱신:</span>
-                <strong>09월 10일 22:25 현황 업데이트</strong>
+                <strong>09월 10일 22:44 현황 업데이트</strong>
             </div>
             <a href="https://github.com/ruknabid/susi-dashboard/actions/workflows/update.yml" target="_blank" class="refresh-btn">
                 🔄 강제 실시간 갱신 (스위치 켜기)
             </a>
+        </div>
+
+        <!-- 🎯 원서 접수 진행도 위젯 -->
+        <div class="progress-banner">
+            <div class="progress-header">
+                <span class="progress-title">🎯 원서 접수 및 결제 진행 현황 (2 / 6장 완료)</span>
+                <span class="progress-badge">33.3% 진행 중</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill"></div>
+            </div>
+            <div class="progress-cards">
+                <div class="progress-card-item">
+                    <span style="color:#34d399; font-weight:800;">✅ 완료 1</span>
+                    <span><strong>덕성여대</strong> 학종 면접형 (글로벌융합 74명)</span>
+                </div>
+                <div class="progress-card-item">
+                    <span style="color:#34d399; font-weight:800;">✅ 완료 2</span>
+                    <span><strong>가천대</strong> 지역균형 (자유전공 321명)</span>
+                </div>
+                <div class="progress-card-item">
+                    <span style="color:#f59e0b; font-weight:800;">⏳ 잔여 4</span>
+                    <span>숭실대 학종, 외대 논술, 서울여대/가천대 교과 등 조율 중</span>
+                </div>
+            </div>
         </div>
 
         <!-- 긴급 마감일 안내 배너 -->
@@ -240,8 +359,12 @@
         <h1>수시 모집 경쟁률 현황</h1>
 <h2>1. 개요</h2>
 <ul>
-<li><strong>경쟁률 정보 최종 업데이트:</strong> 2026년 09월 10일 22:25 (KST)</li>
-<li><strong>원서 접수 마감일:</strong> 한국외대 <span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (조기 마감)</span> | 기타 7개 대학 <span class="deadline-tag normal">9. 11(금) 18:00</span></li>
+<li><strong>경쟁률 정보 최종 업데이트:</strong> 2026년 09월 10일 22:44 (KST)</li>
+<li><strong>원서 접수 마감일:</strong> 한국외대 <span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (내일 조기 마감)</span> | 기타 7개 대학 <span class="deadline-tag normal">9. 11(금) 18:00</span></li>
+<li><strong>🎯 원서 접수 진행 현황:</strong> <strong>총 6장 중 2장 접수/결제 완료!</strong> (잔여 4장 최종 조율 중)</li>
+<li>✅ <strong>[완료 1] 덕성여자대학교</strong> 덕성인재Ⅱ (글로벌융합대학 인문사회 74명) - <strong>접수 및 결제 완료</strong></li>
+<li>✅ <strong>[완료 2] 가천대학교</strong> 지역균형 (자유전공 321명) - <strong>접수 및 결제 완료</strong></li>
+<li>⏳ <strong>[진행 중] 잔여 4장:</strong> 숭실대 학종, 외대 논술, 가천대 교과(대체 검토), 경희대/서울여대/세종대 등</li>
 <li><strong>주요 타겟 대학:</strong> 서울여대, 숭실대, 가천대, 덕성여대, 성균관대, 한국외대, 세종대, 경희대(국제) </li>
 </ul>
 <h2>2. 대학별 경쟁률 확인 링크</h2>
@@ -255,7 +378,7 @@
 <li><a href="https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10950721.html">세종대학교</a></li>
 <li><a href="https://ratio.uwayapply.com/power/?ratioURL=%2F%2Fratio.uwayapply.com%2FSl5KOnw5SmYlJjomSjdmVGY%3D&amp;applyURL=http%3A%2F%2Fipsi1.uwayapply.com%2F2027%2Fsusi2%2Fkhu%2F%3FCHA%3D1&amp;ratioNM=%B0%E6%C8%F1%B4%EB%C7%D0%B1%B3&amp;univURL=http://www.khu.ac.kr">경희대학교</a></li>
 </ul>
-<h2>3. 대학별 경쟁률 요약 (09월 10일 22:25 현황 업데이트)</h2>
+<h2>3. 대학별 경쟁률 요약 (09월 10일 22:44 현황 업데이트)</h2>
 <h3>[메인 지원 후보 6개 대학/학과]</h3>
 <table>
 <thead>
@@ -268,48 +391,53 @@
 <th style="text-align: left;">실시간 경쟁률</th>
 <th style="text-align: left;">전년도 경쟁률</th>
 <th style="text-align: left;">접수 마감일</th>
+<th style="text-align: center;">접수 상태</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">덕성여자대학교</td>
-<td style="text-align: left;">덕성인재Ⅱ</td>
-<td style="text-align: left;">글로벌융합대학</td>
+<td style="text-align: left;"><strong>덕성여자대학교</strong></td>
+<td style="text-align: left;"><strong>덕성인재Ⅱ</strong></td>
+<td style="text-align: left;"><strong>글로벌융합대학</strong></td>
 <td style="text-align: left;">74명</td>
-<td style="text-align: left;">699명</td>
-<td style="text-align: left;">9.45 : 1</td>
+<td style="text-align: left;">795명</td>
+<td style="text-align: left;">10.74 : 1</td>
 <td style="text-align: left;">[덕성인재Ⅱ] 64명 (13.6:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge paid">✅ 결제 완료</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">가천대학교</td>
 <td style="text-align: left;">학생부우수자(교과)</td>
 <td style="text-align: left;">심리학과</td>
 <td style="text-align: left;">6명</td>
-<td style="text-align: left;">36명</td>
-<td style="text-align: left;">6.00 : 1</td>
+<td style="text-align: left;">39명</td>
+<td style="text-align: left;">6.50 : 1</td>
 <td style="text-align: left;">[학생부우수자] 6명 (11.6:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge review">⚠️ 교체 검토</span></td>
 </tr>
 <tr>
-<td style="text-align: left;">가천대학교</td>
-<td style="text-align: left;">지역균형(교과)</td>
-<td style="text-align: left;">자유전공</td>
+<td style="text-align: left;"><strong>가천대학교</strong></td>
+<td style="text-align: left;"><strong>지역균형(교과)</strong></td>
+<td style="text-align: left;"><strong>자유전공</strong></td>
 <td style="text-align: left;">321명</td>
-<td style="text-align: left;">2,584명</td>
-<td style="text-align: left;">8.05 : 1</td>
+<td style="text-align: left;">2,945명</td>
+<td style="text-align: left;">9.17 : 1</td>
 <td style="text-align: left;">[지역균형] 321명 (15.88:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge paid">✅ 결제 완료</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">숭실대학교</td>
 <td style="text-align: left;">SSU미래인재(학종)</td>
 <td style="text-align: left;">사회복지학부</td>
 <td style="text-align: left;">8명</td>
-<td style="text-align: left;">155명</td>
-<td style="text-align: left;">19.38 : 1</td>
+<td style="text-align: left;">172명</td>
+<td style="text-align: left;">21.50 : 1</td>
 <td style="text-align: left;">[SSU미래인재] 8명 (16.5:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge pending">⏳ 검토 중</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">한국외국어대학교</td>
@@ -319,7 +447,19 @@
 <td style="text-align: left;">76명</td>
 <td style="text-align: left;">19.00 : 1</td>
 <td style="text-align: left;">[논술] 5명 (25.4:1)</td>
-<td style="text-align: left;"><span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (조기 마감)</span></td>
+<td style="text-align: left;"><span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (내일 조기 마감)</span></td>
+<td style="text-align: center;"><span class="status-badge pending">⏳ 검토 중</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">서울여자대학교</td>
+<td style="text-align: left;">교과우수자(교과)</td>
+<td style="text-align: left;">행정학과</td>
+<td style="text-align: left;">7명</td>
+<td style="text-align: left;">43명</td>
+<td style="text-align: left;">6.14 : 1</td>
+<td style="text-align: left;">[교과우수자] 7명 (9.67:1)</td>
+<td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge pending">⏳ 검토 중</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">서울여자대학교</td>
@@ -345,6 +485,7 @@
 <th style="text-align: left;">실시간 경쟁률</th>
 <th style="text-align: left;">전년도 경쟁률</th>
 <th style="text-align: left;">접수 마감일</th>
+<th style="text-align: center;">접수 상태</th>
 </tr>
 </thead>
 <tbody>
@@ -353,30 +494,33 @@
 <td style="text-align: left;">지역균형(교과)</td>
 <td style="text-align: left;">자유전공학부</td>
 <td style="text-align: left;">122명</td>
-<td style="text-align: left;">548명</td>
-<td style="text-align: left;">4.49 : 1</td>
+<td style="text-align: left;">621명</td>
+<td style="text-align: left;">5.09 : 1</td>
 <td style="text-align: left;">[지역균형] 223명 (15.57:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">서울여자대학교</td>
 <td style="text-align: left;">바롬인재면접</td>
 <td style="text-align: left;">사회복지학과</td>
 <td style="text-align: left;">8명</td>
-<td style="text-align: left;">145명</td>
-<td style="text-align: left;">18.13 : 1</td>
+<td style="text-align: left;">168명</td>
+<td style="text-align: left;">21.00 : 1</td>
 <td style="text-align: left;">[바롬인재] 8명 (26.4:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">서울여자대학교</td>
 <td style="text-align: left;">교과우수자(교과)</td>
 <td style="text-align: left;">사회복지학과</td>
 <td style="text-align: left;">6명</td>
-<td style="text-align: left;">14명</td>
-<td style="text-align: left;">2.33 : 1</td>
+<td style="text-align: left;">18명</td>
+<td style="text-align: left;">3.00 : 1</td>
 <td style="text-align: left;">[교과우수자] 6명 (16.2:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">경희대학교(국제)</td>
@@ -387,6 +531,7 @@
 <td style="text-align: left;">1.00 : 1</td>
 <td style="text-align: left;">[지역균형] 4명 (7.8:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">경희대학교(국제)</td>
@@ -397,6 +542,7 @@
 <td style="text-align: left;">1.67 : 1</td>
 <td style="text-align: left;">[지역균형] 3명 (12.3:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">경희대학교(국제)</td>
@@ -407,6 +553,7 @@
 <td style="text-align: left;">2.33 : 1</td>
 <td style="text-align: left;">[지역균형] 3명 (13.0:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">경희대학교(국제)</td>
@@ -417,6 +564,7 @@
 <td style="text-align: left;">2.00 : 1</td>
 <td style="text-align: left;">[지역균형] 3명 (14.7:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">경희대학교(국제)</td>
@@ -427,6 +575,7 @@
 <td style="text-align: left;">16.50 : 1</td>
 <td style="text-align: left;">[논술] 2명 (45.0:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">경희대학교(국제)</td>
@@ -437,6 +586,7 @@
 <td style="text-align: left;">23.00 : 1</td>
 <td style="text-align: left;">[논술] 4명 (60.8:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">경희대학교(국제)</td>
@@ -447,6 +597,7 @@
 <td style="text-align: left;">24.00 : 1</td>
 <td style="text-align: left;">[논술] 3명 (52.7:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">경희대학교(국제)</td>
@@ -457,6 +608,7 @@
 <td style="text-align: left;">27.33 : 1</td>
 <td style="text-align: left;">[논술] 3명 (58.0:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">한국외국어대학교</td>
@@ -466,7 +618,8 @@
 <td style="text-align: left;">386명</td>
 <td style="text-align: left;">48.25 : 1</td>
 <td style="text-align: left;">[논술] 10명 (32.5:1)</td>
-<td style="text-align: left;"><span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (조기 마감)</span></td>
+<td style="text-align: left;"><span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (내일 조기 마감)</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">한국외국어대학교</td>
@@ -476,27 +629,30 @@
 <td style="text-align: left;">70명</td>
 <td style="text-align: left;">17.50 : 1</td>
 <td style="text-align: left;">[논술] 6명 (26.3:1)</td>
-<td style="text-align: left;"><span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (조기 마감)</span></td>
+<td style="text-align: left;"><span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (내일 조기 마감)</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">숭실대학교</td>
 <td style="text-align: left;">SSU미래인재</td>
 <td style="text-align: left;">평생교육학과</td>
 <td style="text-align: left;">9명</td>
-<td style="text-align: left;">90명</td>
-<td style="text-align: left;">10.00 : 1</td>
+<td style="text-align: left;">99명</td>
+<td style="text-align: left;">11.00 : 1</td>
 <td style="text-align: left;">[SSU미래인재] 9명 (12.8:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">숭실대학교</td>
 <td style="text-align: left;">SSU미래인재</td>
 <td style="text-align: left;">정치외교학과</td>
 <td style="text-align: left;">5명</td>
-<td style="text-align: left;">137명</td>
-<td style="text-align: left;">27.40 : 1</td>
+<td style="text-align: left;">152명</td>
+<td style="text-align: left;">30.40 : 1</td>
 <td style="text-align: left;">[SSU미래인재] 5명 (18.2:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">세종대학교</td>
@@ -507,6 +663,7 @@
 <td style="text-align: left;">1.50 : 1</td>
 <td style="text-align: left;">[세종인재] 11명 (11.4:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">세종대학교</td>
@@ -517,26 +674,29 @@
 <td style="text-align: left;">1.75 : 1</td>
 <td style="text-align: left;">[세종인재] 12명 (12.1:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">가천대학교</td>
 <td style="text-align: left;">학생부우수자(교과)</td>
 <td style="text-align: left;">사회복지학과</td>
 <td style="text-align: left;">6명</td>
-<td style="text-align: left;">42명</td>
-<td style="text-align: left;">7.00 : 1</td>
+<td style="text-align: left;">56명</td>
+<td style="text-align: left;">9.33 : 1</td>
 <td style="text-align: left;">[학생부우수자] 8명 (15.1:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">가천대학교</td>
 <td style="text-align: left;">학생부우수자(교과)</td>
 <td style="text-align: left;">법과대학</td>
 <td style="text-align: left;">17명</td>
-<td style="text-align: left;">121명</td>
-<td style="text-align: left;">7.12 : 1</td>
+<td style="text-align: left;">143명</td>
+<td style="text-align: left;">8.41 : 1</td>
 <td style="text-align: left;">[학생부우수자] 25명 (12.4:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 <tr>
 <td style="text-align: left;">성균관대학교</td>
@@ -547,6 +707,7 @@
 <td style="text-align: left;">16.93 : 1</td>
 <td style="text-align: left;">[구 융합형] 35명 (22.7:1)</td>
 <td style="text-align: left;"><span class="deadline-tag normal">9. 11(금) 18:00</span></td>
+<td style="text-align: center;"><span class="status-badge backup">예비 검토</span></td>
 </tr>
 </tbody>
 </table>
@@ -568,10 +729,10 @@
 <p><strong>안내:</strong> 지원 전략상 중요도가 높은 메인 추천 대학과 예비 후보 학과의 최근 입시 통계 및 <strong>전략적 상세 분석(기존 비고 사항 전면 통합)</strong>을 체계적으로 수록했습니다.</p>
 </blockquote>
 <hr />
-<h3>덕성여자대학교 (서울) - 글로벌융합대학 (인문사회)</h3>
+<h3>덕성여자대학교 (서울) - 글로벌융합대학 (인문사회) [✅ 접수 및 결제 완료]</h3>
 <ul>
 <li><strong>[덕성인재Ⅱ (학종 면접형)]</strong></li>
-<li><strong>전략 분석 및 비고:</strong> 🛡️ <strong>[본 추천 2호 카드 / 최우선 안전판]</strong><ul>
+<li><strong>전략 분석 및 비고:</strong> 🛡️ <strong>[본 추천 2호 카드 / 최우선 안전판 - ✅ 원서 접수 및 결제 완료]</strong><ul>
 <li>74명 대규모 선발로 꼬리가 길어져 송연이의 내신(3.76)이 최근 4개년 70% 컷(3.42~3.61)에 완벽히 매칭됩니다.</li>
 <li>2단계 면접이 40%로 매우 높으며, 2학년 진학 시 사회복지학·심리학 등 인기 전공 100% 자율 선택권이 보장됩니다.</li>
 <li>면접일이 11.28(토)~29(일) 수능 후이므로, 수능 대박 시 <strong>면접 No-Show(결시)</strong>를 통해 수시 납치를 100% 방어할 수 있는 최고의 안전판입니다.</li>
@@ -585,8 +746,8 @@
 <hr />
 <h3>가천대학교 (글로벌) - 자유전공 / 심리학과 / 사회복지학과 / 법과대학</h3>
 <ul>
-<li><strong>[지역균형(교과)] - 자유전공학부</strong></li>
-<li><strong>전략 분석 및 비고:</strong> 🛡️ <strong>[본 추천 4호 카드 / 대형 펑크 턴 스나이핑]</strong><ul>
+<li><strong>[지역균형(교과)] - 자유전공학부 [✅ 접수 및 결제 완료]</strong></li>
+<li><strong>전략 분석 및 비고:</strong> 🛡️ <strong>[본 추천 4호 카드 / 대형 펑크 턴 스나이핑 - ✅ 원서 접수 및 결제 완료]</strong><ul>
 <li>2026학년도 입결 폭발(70%컷 3.18)로 인한 수험생들의 강력한 기피 심리가 작용하고 있습니다.</li>
 <li>1~5등급 전원 100점 만점 처리 규정으로 송연이도 1단계 5배수(1,605명)를 100% 무혈 통과합니다.</li>
 <li>12.5~7 수능 2주 뒤 면접이 진행되어 수능 결과에 따라 No-Show 결시로 납치를 완벽 차단할 수 있습니다.</li>

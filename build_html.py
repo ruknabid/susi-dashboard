@@ -13,9 +13,15 @@ def build():
     html_content = markdown.markdown(md_text, extensions=['tables', 'fenced_code'])
 
     # 접수 마감일 태그 시각화 강화 (중복 치환 방지)
-    html_content = re.sub(r'(?:<strong>)?9\.\s*10\(목\)\s*17:00(?:</strong>)?\s*🚨', '<span class="deadline-tag danger">9. 10(목) 17:00 🚨 (내일 마감)</span>', html_content)
-    html_content = re.sub(r'(?:<strong>)?9\.\s*11\(금\)\s*17:00(?:</strong>)?\s*⚠️', '<span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (조기 마감)</span>', html_content)
+    html_content = re.sub(r'(?:<strong>)?9\.\s*10\(목\)\s*17:00(?:</strong>)?\s*🚨', '<span class="deadline-tag danger">9. 10(목) 17:00 🚨 (마감)</span>', html_content)
+    html_content = re.sub(r'(?:<strong>)?9\.\s*11\(금\)\s*17:00(?:</strong>)?\s*⚠️', '<span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (내일 조기 마감)</span>', html_content)
     html_content = re.sub(r'9\.\s*11\(금\)\s*18:00', '<span class="deadline-tag normal">9. 11(금) 18:00</span>', html_content)
+
+    # 접수 상태 뱃지 시각화
+    html_content = re.sub(r'(?:<strong>)?✅\s*접수/결제\s*완료(?:</strong>)?', '<span class="status-badge paid">✅ 결제 완료</span>', html_content)
+    html_content = re.sub(r'\[\s*\]\s*미결제\s*\(교체\s*검토\)', '<span class="status-badge review">⚠️ 교체 검토</span>', html_content)
+    html_content = re.sub(r'\[\s*\]\s*미결제\s*\(검토\s*중\)', '<span class="status-badge pending">⏳ 검토 중</span>', html_content)
+    html_content = re.sub(r'\[\s*\]\s*예비\s*검토', '<span class="status-badge backup">예비 검토</span>', html_content)
 
     template = f"""<!DOCTYPE html>
 <html lang="ko">
@@ -62,6 +68,100 @@ def build():
         a {{ color: #60a5fa; text-decoration: none; font-weight: 500; }}
         a:hover {{ color: #93c5fd; text-decoration: underline; }}
         blockquote {{ margin: 20px 0; padding: 20px 24px; border-left: 4px solid var(--accent); background: rgba(59, 130, 246, 0.1); border-radius: 0 12px 12px 0; }}
+
+        /* 원서 접수 진행도 위젯 */
+        .progress-banner {{
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);
+        }}
+        .progress-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }}
+        .progress-title {{
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #34d399;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        .progress-badge {{
+            font-size: 0.85rem;
+            font-weight: 800;
+            background: rgba(16, 185, 129, 0.25);
+            color: #34d399;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            border: 1px solid rgba(16, 185, 129, 0.5);
+        }}
+        .progress-bar-bg {{
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 9999px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }}
+        .progress-bar-fill {{
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            height: 100%;
+            width: 33.3%;
+            border-radius: 9999px;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+        }}
+        .progress-cards {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 10px;
+            font-size: 0.88rem;
+        }}
+        .progress-card-item {{
+            background: rgba(15, 23, 42, 0.6);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+
+        /* 상태 뱃지 */
+        .status-badge {{
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }}
+        .status-badge.paid {{
+            background: rgba(16, 185, 129, 0.22);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.6);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+        }}
+        .status-badge.review {{
+            background: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+            border: 1px solid rgba(245, 158, 11, 0.5);
+        }}
+        .status-badge.pending {{
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }}
+        .status-badge.backup {{
+            background: rgba(148, 163, 184, 0.15);
+            color: #cbd5e1;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }}
 
         /* 긴급 마감 배너 카드 */
         .deadline-alert-banner {{
@@ -226,6 +326,31 @@ def build():
             <a href="https://github.com/ruknabid/susi-dashboard/actions/workflows/update.yml" target="_blank" class="refresh-btn">
                 🔄 강제 실시간 갱신 (스위치 켜기)
             </a>
+        </div>
+
+        <!-- 🎯 원서 접수 진행도 위젯 -->
+        <div class="progress-banner">
+            <div class="progress-header">
+                <span class="progress-title">🎯 원서 접수 및 결제 진행 현황 (2 / 6장 완료)</span>
+                <span class="progress-badge">33.3% 진행 중</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill"></div>
+            </div>
+            <div class="progress-cards">
+                <div class="progress-card-item">
+                    <span style="color:#34d399; font-weight:800;">✅ 완료 1</span>
+                    <span><strong>덕성여대</strong> 학종 면접형 (글로벌융합 74명)</span>
+                </div>
+                <div class="progress-card-item">
+                    <span style="color:#34d399; font-weight:800;">✅ 완료 2</span>
+                    <span><strong>가천대</strong> 지역균형 (자유전공 321명)</span>
+                </div>
+                <div class="progress-card-item">
+                    <span style="color:#f59e0b; font-weight:800;">⏳ 잔여 4</span>
+                    <span>숭실대 학종, 외대 논술, 서울여대/가천대 교과 등 조율 중</span>
+                </div>
+            </div>
         </div>
 
         <!-- 긴급 마감일 안내 배너 -->
