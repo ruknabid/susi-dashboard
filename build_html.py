@@ -348,7 +348,7 @@ def build():
                 </div>
                 <div class="progress-card-item">
                     <span style="color:#f59e0b; font-weight:800;">⏳ 잔여 4</span>
-                    <span>숭실대 학종, 외대 논술, 서울여대/가천대 교과 등 조율 중</span>
+                    <span>숭실대 학종, 외대 논술(인도), 경희대 교과(러시아어), 서울여대 교과(행정) 조율 중</span>
                 </div>
             </div>
         </div>
