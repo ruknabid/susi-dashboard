@@ -1,21 +1,25 @@
 import os
 import markdown
 import re
+from datetime import datetime, timezone, timedelta
 
 def build():
     with open('경쟁률_현황.md', 'r', encoding='utf-8') as f:
         md_text = f.read()
 
     # 마지막 업데이트 시간 파싱
+    KST = timezone(timedelta(hours=9))
+    now_dt = datetime.now(KST)
+    full_now_str = now_dt.strftime('%Y년 %m월 %d일 %H:%M')
+
     match = re.search(r'\((.* 현황 업데이트)\)', md_text)
-    last_updated = match.group(1) if match else '업데이트 시간 알 수 없음'
+    last_updated = match.group(1) if match else f'{full_now_str} (KST)'
 
     html_content = markdown.markdown(md_text, extensions=['tables', 'fenced_code'])
 
-    # 접수 마감일 태그 시각화 강화 (중복 치환 방지)
-    html_content = re.sub(r'(?:<strong>)?9\.\s*10\(목\)\s*17:00(?:</strong>)?\s*🚨', '<span class="deadline-tag danger">9. 10(목) 17:00 🚨 (마감)</span>', html_content)
-    html_content = re.sub(r'(?:<strong>)?9\.\s*11\(금\)\s*17:00(?:</strong>)?\s*⚠️', '<span class="deadline-tag warning">9. 11(금) 17:00 ⚠️ (내일 조기 마감)</span>', html_content)
-    html_content = re.sub(r'9\.\s*11\(금\)\s*18:00', '<span class="deadline-tag normal">9. 11(금) 18:00</span>', html_content)
+    # 접수 마감일 태그 시각화 강화
+    html_content = re.sub(r'(?:<strong>)?9\.\s*11\(금\)\s*17:00(?:</strong>)?\s*⚠️', '<span class="deadline-tag danger">9. 11(금) 17:00 ⚠️ (마감 종료)</span>', html_content)
+    html_content = re.sub(r'9\.\s*11\(금\)\s*18:00', '<span class="deadline-tag warning">9. 11(금) 18:00 (마감 임박)</span>', html_content)
 
     # 접수 상태 뱃지 시각화
     html_content = re.sub(r'(?:<strong>)?✅\s*접수/결제\s*완료(?:</strong>)?', '<span class="status-badge paid">✅ 결제 완료</span>', html_content)
@@ -31,105 +35,158 @@ def build():
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2027 대학 입시 경쟁률 대시보드</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <title>2027 송연 수시 6장 최종 접수 현황 & 경쟁률 대시보드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {{
-            --bg-color: #0b0f19;
-            --surface-color: rgba(22, 30, 49, 0.75);
+            --bg-color: #080c14;
+            --surface-color: rgba(18, 26, 43, 0.82);
             --text-main: #f8fafc;
             --accent: #3b82f6;
+            --emerald: #10b981;
             --border-color: rgba(255, 255, 255, 0.12);
         }}
+        * {{ box-sizing: border-box; }}
         body {{
             font-family: 'Pretendard', sans-serif;
             background-color: var(--bg-color);
-            background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.18) 0px, transparent 50%),
-                              radial-gradient(at 100% 100%, rgba(239, 68, 68, 0.15) 0px, transparent 50%);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.18) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.20) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 60%);
             background-attachment: fixed;
             color: var(--text-main);
-            margin: 0; padding: 20px; line-height: 1.6;
+            margin: 0; padding: 24px 16px; line-height: 1.65;
         }}
         .container {{
-            max-width: 1240px; margin: 0 auto; padding: 36px;
+            max-width: 1280px; margin: 0 auto; padding: 40px;
             background: var(--surface-color);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
             border: 1px solid var(--border-color);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            border-radius: 28px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.65);
         }}
-        h1 {{ color: #fff; font-size: 2.3rem; font-weight: 800; background: linear-gradient(to right, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 10px; margin-bottom: 20px; }}
-        h2 {{ color: #fff; font-size: 1.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 40px; }}
-        h3 {{ color: #93c5fd; font-size: 1.2rem; margin-top: 25px; }}
-        table {{ width: 100%; border-collapse: separate; border-spacing: 0; margin: 20px 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); }}
-        th, td {{ padding: 14px 16px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.07); background: rgba(17, 24, 39, 0.5); font-size: 0.95rem; }}
-        th {{ background: rgba(15, 23, 42, 0.9); font-weight: 700; color: #cbd5e1; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; }}
-        tr:hover td {{ background: rgba(30, 41, 59, 0.7); }}
+        h1 {{ 
+            font-size: 2.35rem; font-weight: 900; letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #34d399 0%, #60a5fa 50%, #c084fc 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-top: 10px; margin-bottom: 24px;
+        }}
+        h2 {{ color: #fff; font-size: 1.55rem; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-top: 48px; }}
+        h3 {{ color: #93c5fd; font-size: 1.25rem; margin-top: 30px; }}
+        table {{ width: 100%; border-collapse: separate; border-spacing: 0; margin: 24px 0; border-radius: 14px; overflow: hidden; border: 1px solid var(--border-color); }}
+        th, td {{ padding: 15px 18px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: rgba(15, 23, 42, 0.55); font-size: 0.95rem; }}
+        th {{ background: rgba(15, 23, 42, 0.95); font-weight: 700; color: #cbd5e1; text-transform: uppercase; font-size: 0.86rem; letter-spacing: 0.05em; }}
+        tr:hover td {{ background: rgba(30, 41, 59, 0.75); }}
         a {{ color: #60a5fa; text-decoration: none; font-weight: 500; }}
         a:hover {{ color: #93c5fd; text-decoration: underline; }}
-        blockquote {{ margin: 20px 0; padding: 20px 24px; border-left: 4px solid var(--accent); background: rgba(59, 130, 246, 0.1); border-radius: 0 12px 12px 0; }}
+        blockquote {{ margin: 24px 0; padding: 22px 28px; border-left: 4px solid var(--accent); background: rgba(59, 130, 246, 0.12); border-radius: 0 14px 14px 0; }}
 
-        /* 원서 접수 진행도 위젯 */
-        .progress-banner {{
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
-            border: 1px solid rgba(16, 185, 129, 0.4);
-            border-radius: 16px;
-            padding: 20px 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.2);
+        /* 100% 완료 축하 배너 */
+        .celebration-banner {{
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(59, 130, 246, 0.22));
+            border: 2px solid rgba(52, 211, 153, 0.6);
+            border-radius: 20px;
+            padding: 24px 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 15px 35px -5px rgba(16, 185, 129, 0.35);
+            animation: glow 3s infinite alternate;
         }}
-        .progress-header {{
+        @keyframes glow {{
+            0% {{ box-shadow: 0 10px 30px -5px rgba(16, 185, 129, 0.3); }}
+            100% {{ box-shadow: 0 15px 45px 0px rgba(52, 211, 153, 0.5); }}
+        }}
+        .celebration-header {{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
         }}
-        .progress-title {{
-            font-size: 1.15rem;
-            font-weight: 800;
+        .celebration-title {{
+            font-size: 1.35rem;
+            font-weight: 900;
             color: #34d399;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }}
-        .progress-badge {{
-            font-size: 0.85rem;
+        .celebration-badge {{
+            font-size: 0.9rem;
             font-weight: 800;
-            background: rgba(16, 185, 129, 0.25);
+            background: rgba(16, 185, 129, 0.3);
             color: #34d399;
-            padding: 4px 12px;
+            padding: 6px 16px;
             border-radius: 9999px;
-            border: 1px solid rgba(16, 185, 129, 0.5);
+            border: 1px solid rgba(52, 211, 153, 0.7);
         }}
         .progress-bar-bg {{
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             border-radius: 9999px;
-            height: 10px;
+            height: 12px;
             overflow: hidden;
-            margin-bottom: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }}
         .progress-bar-fill {{
-            background: linear-gradient(90deg, #10b981, #3b82f6);
+            background: linear-gradient(90deg, #10b981, #06b6d4, #3b82f6);
             height: 100%;
-            width: 33.3%;
+            width: 100%;
             border-radius: 9999px;
-            box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.8);
         }}
-        .progress-cards {{
+        .final-cards-grid {{
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 10px;
-            font-size: 0.88rem;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 14px;
         }}
-        .progress-card-item {{
-            background: rgba(15, 23, 42, 0.6);
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .final-card {{
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 12px;
+            padding: 14px 18px;
             display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }}
+        .final-card:hover {{
+            transform: translateY(-2px);
+            border-color: rgba(52, 211, 153, 0.7);
+        }}
+        .final-card-top {{
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
+        }}
+        .final-card .univ-name {{
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #fff;
+        }}
+        .final-card .app-no {{
+            font-family: monospace;
+            font-size: 0.85rem;
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }}
+        .final-card .dept-info {{
+            font-size: 0.92rem;
+            color: #cbd5e1;
+            font-weight: 500;
+        }}
+        .final-card .meta-info {{
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            color: #94a3b8;
+            margin-top: 4px;
+            padding-top: 6px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
         }}
 
         /* 상태 뱃지 */
@@ -146,99 +203,6 @@ def build():
             color: #34d399;
             border: 1px solid rgba(16, 185, 129, 0.6);
             box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
-        }}
-        .status-badge.review {{
-            background: rgba(245, 158, 11, 0.2);
-            color: #fcd34d;
-            border: 1px solid rgba(245, 158, 11, 0.5);
-        }}
-        .status-badge.pending {{
-            background: rgba(59, 130, 246, 0.2);
-            color: #93c5fd;
-            border: 1px solid rgba(59, 130, 246, 0.4);
-        }}
-        .status-badge.backup {{
-            background: rgba(148, 163, 184, 0.15);
-            color: #cbd5e1;
-            border: 1px solid rgba(148, 163, 184, 0.3);
-        }}
-
-        /* 긴급 마감 배너 카드 */
-        .deadline-alert-banner {{
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.15));
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            border-radius: 16px;
-            padding: 22px;
-            margin-bottom: 28px;
-            box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.2);
-        }}
-        .deadline-alert-title {{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: #fca5a5;
-            margin-bottom: 14px;
-        }}
-        .deadline-grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 12px;
-        }}
-        .deadline-card {{
-            background: rgba(15, 23, 42, 0.75);
-            padding: 14px 18px;
-            border-radius: 12px;
-            border-left: 5px solid #64748b;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }}
-        .deadline-card.urgent {{
-            border-left-color: #ef4444;
-            background: rgba(239, 68, 68, 0.12);
-        }}
-        .deadline-card.warning {{
-            border-left-color: #f59e0b;
-            background: rgba(245, 158, 11, 0.12);
-        }}
-        .deadline-card.normal {{
-            border-left-color: #3b82f6;
-            background: rgba(59, 130, 246, 0.1);
-        }}
-        .deadline-card-header {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }}
-        .deadline-card .univ {{
-            font-weight: 700;
-            font-size: 1rem;
-            color: #fff;
-        }}
-        .deadline-card .dday {{
-            font-size: 0.75rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 9999px;
-        }}
-        .deadline-card.urgent .dday {{ background: #ef4444; color: #fff; animation: pulse 1.8s infinite; }}
-        .deadline-card.warning .dday {{ background: #f59e0b; color: #000; }}
-        .deadline-card.normal .dday {{ background: #334155; color: #cbd5e1; }}
-        .deadline-card .time {{
-            font-size: 0.92rem;
-            color: #e2e8f0;
-            font-weight: 600;
-        }}
-        .deadline-card .desc {{
-            font-size: 0.8rem;
-            color: #94a3b8;
-        }}
-
-        @keyframes pulse {{
-            0%, 100% {{ opacity: 1; transform: scale(1); }}
-            50% {{ opacity: 0.85; transform: scale(1.03); }}
         }}
 
         /* 표 내부 마감일 뱃지 */
@@ -260,25 +224,62 @@ def build():
             color: #fcd34d;
             border: 1px solid #f59e0b;
         }}
-        .deadline-tag.normal {{
-            background: rgba(59, 130, 246, 0.2);
+
+        /* 접수증 이미지 섹션 */
+        .receipt-section {{
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 32px 0;
+        }}
+        .receipt-title {{
+            font-size: 1.15rem;
+            font-weight: 800;
             color: #93c5fd;
-            border: 1px solid rgba(59, 130, 246, 0.4);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        .receipt-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }}
+        .receipt-card {{
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            text-align: center;
+        }}
+        .receipt-card img {{
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }}
+        .receipt-card img:hover {{
+            transform: scale(1.02);
+        }}
+        .receipt-label {{
+            padding: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            background: rgba(15, 23, 42, 0.8);
         }}
 
-        @media (max-width: 768px) {{
-            .container {{ padding: 18px; border-radius: 16px; }}
-            table {{ display: block; overflow-x: auto; white-space: nowrap; }}
-            h1 {{ font-size: 1.8rem; }}
-        }}
         .header-actions {{
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             background: rgba(15, 23, 42, 0.6);
-            padding: 15px 20px;
-            border-radius: 12px;
+            padding: 16px 24px;
+            border-radius: 14px;
             border: 1px solid var(--border-color);
             flex-wrap: wrap;
             gap: 15px;
@@ -292,27 +293,33 @@ def build():
         }}
         .update-time strong {{
             color: #34d399;
-            font-weight: 600;
+            font-weight: 700;
         }}
         .refresh-btn {{
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             color: white;
             padding: 10px 20px;
-            border-radius: 8px;
+            border-radius: 10px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 4px 8px -1px rgba(59, 130, 246, 0.4);
         }}
         .refresh-btn:hover {{
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px -2px rgba(59, 130, 246, 0.6);
+            box-shadow: 0 6px 14px -2px rgba(59, 130, 246, 0.6);
             color: white;
+        }}
+        @media (max-width: 768px) {{
+            .container {{ padding: 20px 16px; border-radius: 18px; }}
+            table {{ display: block; overflow-x: auto; white-space: nowrap; }}
+            h1 {{ font-size: 1.85rem; }}
+            .final-cards-grid {{ grid-template-columns: 1fr; }}
         }}
     </style>
 </head>
@@ -320,67 +327,125 @@ def build():
     <div class="container">
         <div class="header-actions">
             <div class="update-time">
-                <span>⏱️ 경쟁률 최종 갱신:</span>
+                <span>⏱️ 최종 확인 시각:</span>
                 <strong>{last_updated}</strong>
             </div>
             <a href="https://github.com/ruknabid/susi-dashboard/actions/workflows/update.yml" target="_blank" class="refresh-btn">
-                🔄 강제 실시간 갱신 (스위치 켜기)
+                🔄 원클릭 실시간 갱신 (GitHub Actions)
             </a>
         </div>
 
-        <!-- 🎯 원서 접수 진행도 위젯 -->
-        <div class="progress-banner">
-            <div class="progress-header">
-                <span class="progress-title">🎯 원서 접수 및 결제 진행 현황 (2 / 6장 완료)</span>
-                <span class="progress-badge">33.3% 진행 중</span>
+        <!-- 🎯 6장 100% 결제 완료 축하 배너 -->
+        <div class="celebration-banner">
+            <div class="celebration-header">
+                <span class="celebration-title">🎉 2027 송연 수시 6장 원서 접수 및 결제 100% 최종 완료!</span>
+                <span class="celebration-badge">6 / 6장 완료 (결제 총액: 420,000원)</span>
             </div>
             <div class="progress-bar-bg">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-cards">
-                <div class="progress-card-item">
-                    <span style="color:#34d399; font-weight:800;">✅ 완료 1</span>
-                    <span><strong>덕성여대</strong> 학종 면접형 (글로벌융합 74명)</span>
+            <div class="final-cards-grid">
+                <div class="final-card">
+                    <div class="final-card-top">
+                        <span class="univ-name">숭실대학교</span>
+                        <span class="app-no">수험: 121460163</span>
+                    </div>
+                    <div class="dept-info">SSU미래인재(학종) · 평생교육학과 (9명)</div>
+                    <div class="meta-info">
+                        <span>경쟁률: <strong>15.78 : 1</strong></span>
+                        <span>면접: 11. 27(금)</span>
+                        <span style="color:#34d399; font-weight:700;">85,000원 결제</span>
+                    </div>
                 </div>
-                <div class="progress-card-item">
-                    <span style="color:#34d399; font-weight:800;">✅ 완료 2</span>
-                    <span><strong>가천대</strong> 지역균형 (자유전공 321명)</span>
+
+                <div class="final-card">
+                    <div class="final-card-top">
+                        <span class="univ-name">서울여자대학교</span>
+                        <span class="app-no">수험: 34260124</span>
+                    </div>
+                    <div class="dept-info">바롬인재면접(학종) · 행정학과 (8명)</div>
+                    <div class="meta-info">
+                        <span>경쟁률: <strong>12.13 : 1</strong></span>
+                        <span>면접: 11. 28(토)</span>
+                        <span style="color:#34d399; font-weight:700;">70,000원 결제</span>
+                    </div>
                 </div>
-                <div class="progress-card-item">
-                    <span style="color:#f59e0b; font-weight:800;">⏳ 잔여 4</span>
-                    <span>숭실대 학종, 외대 논술(인도), 경희대 교과(러시아어), 서울여대 교과(행정) 조율 중</span>
+
+                <div class="final-card">
+                    <div class="final-card-top">
+                        <span class="univ-name">덕성여자대학교</span>
+                        <span class="app-no">수험: 1051N1246</span>
+                    </div>
+                    <div class="dept-info">덕성인재Ⅱ(학종) · 글로벌융합대학(인문사회 74명)</div>
+                    <div class="meta-info">
+                        <span>경쟁률: <strong>16.11 : 1</strong></span>
+                        <span>면접: 11. 22(일)</span>
+                        <span style="color:#34d399; font-weight:700;">75,000원 결제</span>
+                    </div>
+                </div>
+
+                <div class="final-card">
+                    <div class="final-card-top">
+                        <span class="univ-name">가천대학교</span>
+                        <span class="app-no">수험: 2197402578</span>
+                    </div>
+                    <div class="dept-info">지역균형(교과면접) · 자유전공학부 (321명)</div>
+                    <div class="meta-info">
+                        <span>경쟁률: <strong>12.50 : 1</strong></span>
+                        <span>면접: 12. 5~7</span>
+                        <span style="color:#34d399; font-weight:700;">65,000원 결제</span>
+                    </div>
+                </div>
+
+                <div class="final-card">
+                    <div class="final-card-top">
+                        <span class="univ-name">경희대학교(국제)</span>
+                        <span class="app-no">수험: 3275010016</span>
+                    </div>
+                    <div class="dept-info">지역균형(교과) · 프랑스어학과 (3명) 🎯</div>
+                    <div class="meta-info">
+                        <span>경쟁률: <strong>2.67 : 1 (초저)</strong></span>
+                        <span>수능최저: 2합5</span>
+                        <span style="color:#34d399; font-weight:700;">65,000원 결제</span>
+                    </div>
+                </div>
+
+                <div class="final-card">
+                    <div class="final-card-top">
+                        <span class="univ-name">한국외국어대학교</span>
+                        <span class="app-no">수험: 261500192</span>
+                    </div>
+                    <div class="dept-info">논술전형 · 인도·남아시아학과 (4명)</div>
+                    <div class="meta-info">
+                        <span>경쟁률: <strong>37.25 : 1</strong></span>
+                        <span>논술: 11. 29(일)</span>
+                        <span style="color:#34d399; font-weight:700;">60,000원 결제</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 긴급 마감일 안내 배너 -->
-        <div class="deadline-alert-banner">
-            <div class="deadline-alert-title">
-                <span>🚨 2027 수시 원서접수 마감 시한 핵심 체크</span>
+        <!-- 📷 원서 접수증 확인 섹션 -->
+        <div class="receipt-section">
+            <div class="receipt-title">
+                <span>📄 최종 원서 접수증 확인 (유웨이어플라이 & 진학어플라이)</span>
             </div>
-            <div class="deadline-grid">
-                <div class="deadline-card urgent">
-                    <div class="deadline-card-header">
-                        <span class="univ">한국외국어대학교</span>
-                        <span class="dday">내일 조기마감! ⚠️</span>
-                    </div>
-                    <div class="time">9월 11일(금) 17:00 마감</div>
-                    <div class="desc">🚨 18시가 아닌 17시 마감! 내일 오후 3시 이전 결제 완료 필수</div>
+            <div class="receipt-grid">
+                <div class="receipt-card">
+                    <a href="송연수시접수_1.JPG" target="_blank">
+                        <img src="송연수시접수_1.JPG" alt="송연 수시 접수증 1" loading="lazy">
+                    </a>
+                    <div class="receipt-label">📌 진학어플라이 / 유웨이어플라이 접수 내역 1 (클릭 시 원본 확대)</div>
                 </div>
-                <div class="deadline-card warning">
-                    <div class="deadline-card-header">
-                        <span class="univ">기타 7개 대학</span>
-                        <span class="dday">내일 최종마감 ⏳</span>
-                    </div>
-                    <div class="time">9월 11일(금) 18:00 마감</div>
-                    <div class="desc">경희, 성균관, 숭실, 세종, 서울여, 덕성여, 가천대 (오후 3~4시 결제 권장)</div>
+                <div class="receipt-card">
+                    <a href="송연수시접수_2.JPG" target="_blank">
+                        <img src="송연수시접수_2.JPG" alt="송연 수시 접수증 2" loading="lazy">
+                    </a>
+                    <div class="receipt-label">📌 진학어플라이 / 유웨이어플라이 접수 내역 2 (클릭 시 원본 확대)</div>
                 </div>
             </div>
         </div>
 
-        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 25px; text-align: right;">
-            * 버튼 클릭 후 <strong>Run workflow</strong>를 누르시면 30초 뒤 전체 데이터가 자동 갱신됩니다.
-        </div>
         {html_content}
     </div>
 </body>
@@ -389,7 +454,7 @@ def build():
 
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(template)
-    print("index.html 생성 완료!")
+    print("index.html 최종 빌드 완료!")
 
 if __name__ == "__main__":
     build()
