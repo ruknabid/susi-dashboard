@@ -352,7 +352,7 @@ def build():
                     </div>
                     <div class="dept-info">SSU미래인재(학종) · 평생교육학과 (9명)</div>
                     <div class="meta-info">
-                        <span>경쟁률: <strong>15.78 : 1</strong></span>
+                        <span>경쟁률: <strong>18.89 : 1 [최종]</strong></span>
                         <span>면접: 11. 27(금)</span>
                         <span style="color:#34d399; font-weight:700;">85,000원 결제</span>
                     </div>
@@ -417,7 +417,7 @@ def build():
                     </div>
                     <div class="dept-info">논술전형 · 인도·남아시아학과 (4명)</div>
                     <div class="meta-info">
-                        <span>경쟁률: <strong>37.25 : 1</strong></span>
+                        <span>경쟁률: <strong>59.25 : 1 [최종]</strong></span>
                         <span>논술: 11. 29(일)</span>
                         <span style="color:#34d399; font-weight:700;">60,000원 결제</span>
                     </div>
