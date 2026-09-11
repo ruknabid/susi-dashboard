@@ -21,6 +21,7 @@ targets = [
     ('한국외국어대학교', '논술', '인도·남아시아', 'https://ratio.uwayapply.com/Sl5KJmg6fEpmJSY6Jko3ZlRm', 'euc-kr'),
     ('덕성여자대학교', '덕성인재전형Ⅱ', '글로벌융합대학(인문사회)', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10530631.html', 'utf-8'),
     ('서울여자대학교', '바롬인재면접', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
+    ('서울여자대학교', '바롬인재면접', '행정', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('서울여자대학교', '교과우수자전형', '사회복지', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('서울여자대학교', '교과우수자전형', '행정', 'https://addon.jinhakapply.com/RatioV1/RatioH/Ratio10860821.html', 'utf-8'),
     ('경희대학교(국제)', '지역균형', '글로벌커뮤니케이션학부', 'https://ratio.uwayapply.com/Sl5KOnw5SmYlJjomSjdmVGY=', 'euc-kr'),
