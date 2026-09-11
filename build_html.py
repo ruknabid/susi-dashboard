@@ -404,7 +404,7 @@ def build():
                     </div>
                     <div class="dept-info">지역균형(교과) · 프랑스어학과 (3명) 🎯</div>
                     <div class="meta-info">
-                        <span>경쟁률: <strong>2.67 : 1 (초저)</strong></span>
+                        <span>경쟁률: <strong>7.67 : 1 [최종]</strong></span>
                         <span>수능최저: 2합5</span>
                         <span style="color:#34d399; font-weight:700;">65,000원 결제</span>
                     </div>
